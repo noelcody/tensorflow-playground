@@ -652,6 +652,28 @@ function drawNetwork(network: nn.Node[][]): void {
     getRelativeHeight(d3.select("#network"))
   );
   d3.select(".column.features").style("height", height + "px");
+  
+  // --- HACK: Draw the output node's bias
+  let nodeGroup = container.append("g")
+    .attr({
+      "class": "node",
+      "id": `hack`,
+      "transform": `translate(100,100)`
+    });
+  nodeGroup.append("rect")
+    .attr({
+      id: `hack`,
+      x: 0,
+      y: 100,
+      width: 100,
+      height: 100,
+    }).on("mouseenter", function() {
+      // node here references the output node assigned above
+      updateHoverCard(HoverType.BIAS, node, d3.mouse(container.node()));
+    }).on("mouseleave", function() {
+      updateHoverCard(null);
+    });
+  // --- /HACK
 }
 
 function getRelativeHeight(selection) {
